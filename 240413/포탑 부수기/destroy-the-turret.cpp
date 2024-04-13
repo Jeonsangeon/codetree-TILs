@@ -24,7 +24,7 @@ void cannonAttack(pair<int, int> attacker, pair<int, int> target){
     for(int i = 0; i < 8; ++i){
         int splash_row = (target.first+splash_r[i])%5 ? (target.first+splash_r[i])%5 : 1;
         int splash_col = (target.second+splash_c[i])%5 ? (target.second+splash_c[i])%5 : 1;
-        if(!field[splash_row][splash_col])
+        if(!field[splash_row][splash_col] || (splash_row == attacker.first && splash_col == attacker.second))
             continue;
         field[splash_row][splash_col] = ((field[splash_row][splash_col] - (damage/2)) < 0) ? 0 : (field[splash_row][splash_col] - (damage/2));
     }
@@ -132,7 +132,7 @@ pair<int, int> findAttacter(){
             }
         }
     }
-    field[attacker.first][attacker.second] += (UPGRADE_POWER);
+
     return attacker;
 }
 
@@ -167,11 +167,14 @@ int main() {
         copyField(backup_field);
         
         attacker = findAttacter();
-        attack[attacker.first][attacker.second] = round;
         target = findTarget();
+
+        field[attacker.first][attacker.second] += (UPGRADE_POWER);
+        attack[attacker.first][attacker.second] = round;
 
         if(!laserAttack(attacker, target))
             cannonAttack(attacker, target);
+
         fix(backup_field);
         target = findTarget();
     }
