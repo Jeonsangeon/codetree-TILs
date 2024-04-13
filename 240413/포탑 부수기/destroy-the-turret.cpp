@@ -165,7 +165,7 @@ int main() {
     pair<int, int> attacker, target;
     for(int round = 1; round <= K; ++round){
         copyField(backup_field);
-
+        
         attacker = findAttacter();
         attack[attacker.first][attacker.second] = round;
         target = findTarget();
